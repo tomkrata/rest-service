@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.apache.commons.lang.time.DateUtils;
 
 import com.example.restservice.controllers.WeatherController;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @SpringBootTest
@@ -101,7 +103,13 @@ public class WeatherControllerTests {
     @Test
     public void getDateFromDayAndTimeShouldReturnNewDate() throws Exception {
         final Date expected = new SimpleDateFormat("d.M.yyyy;HH:mm").parse("20.2.2020;15:20");
-        final Date value = wc.getDateFromDayAndTime("20.2.2020", "15:20");
+        final Date value = wc.testGetDateFromDayAndTime("20.2.2020", "15:20");
+        assertEquals(expected, value);
+    }
+    @Test
+    public void wrongFormatShouldReturnCurrentTimeMinutes() throws Exception {
+        Date expected = DateUtils.round(new Date(), Calendar.MINUTE);
+        Date value = DateUtils.round(wc.testGetDate("202.2020", new SimpleDateFormat("d.M.yyyy")), Calendar.MINUTE);
         assertEquals(expected, value);
     }
 }

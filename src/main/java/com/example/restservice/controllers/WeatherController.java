@@ -18,7 +18,28 @@ public class WeatherController
     public Weather weather(@RequestParam(value="location", defaultValue = "Prague")  String location,
                            @RequestParam(value="date", defaultValue = "today") String date,
                            @RequestParam(value="time", defaultValue = "now") String time) {
-        return createWeather(location, date, time);
+        return getWeather(location, date, time, Option.random);
+    }
+
+    private Weather getWeather(String location, String date, String time, Option option)
+    {
+        Weather ret;
+        Date d;
+        switch(option)
+        {
+            case api:
+                d = getDateFromDayAndTime(date, time);
+                ret = getWeatherFromApi(location, d);
+                break;
+            case dtb:
+                d = getDateFromDayAndTime(date, time);
+                ret = getWeatherFromDtb(location, d);
+                break;
+            case random:
+            default:
+                ret = createWeather(location, date, time);
+        }
+        return ret;
     }
 
 
@@ -59,9 +80,22 @@ public class WeatherController
         throw new java.lang.UnsupportedOperationException();
     }
 
-    public Date getDateFromDayAndTime(String day, String time)
+    /**
+     * parse day;time to Date
+     * if cannot Date is set to current time
+     * @param day
+     * @param time
+     * @return Date
+     */
+    private Date getDateFromDayAndTime(String day, String time)
     {
         return getDate(day + ";" + time, new SimpleDateFormat("d.M.yyyy;HH:mm"));
+    }
+
+    //only for test purposes
+    public Date testGetDateFromDayAndTime(String day, String time)
+    {
+        return getDateFromDayAndTime(day, time);
     }
 
     /**
@@ -80,5 +114,15 @@ public class WeatherController
             d = new Date();
         }
         return d;
+    }
+
+    //only for test purposes
+    public Date testGetDate(String date, SimpleDateFormat sdf)
+    {
+        return getDate(date, sdf);
+    }
+
+    private enum Option {
+        random,api,dtb;
     }
 }
