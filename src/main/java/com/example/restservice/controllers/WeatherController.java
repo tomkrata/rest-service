@@ -2,6 +2,7 @@ package com.example.restservice.controllers;
 
 import com.example.restservice.Weather;
 import com.example.restservice.Wind;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +18,19 @@ public class WeatherController
     @GetMapping("/weather")
     public Weather weather(@RequestParam(value="location", defaultValue = "Prague")  String location,
                            @RequestParam(value="date", defaultValue = "today") String date,
-                           @RequestParam(value="time", defaultValue = "now") String time) {
-        return getWeather(location, date, time, Option.random);
+                           @RequestParam(value="time", defaultValue = "now") String time,
+                           @RequestParam(value="option", defaultValue = "random") String option) {
+        return getWeather(location, date, time, Option.valueOf(option));
     }
 
+    /**
+     * switch between given options
+     * @param location
+     * @param date
+     * @param time
+     * @param option
+     * @return Weather
+     */
     private Weather getWeather(String location, String date, String time, Option option)
     {
         Weather ret;
@@ -64,8 +74,8 @@ public class WeatherController
         seed += day.getTime() + t.getTime();
         Random rnd = new Random();
         rnd.setSeed(seed);
-        int temperature = rnd.nextInt(31) - 10; // -10 - 20
-        float speed = rnd.nextFloat() * rnd.nextInt(20);
+        int temperature = rnd.nextInt(31) - 10;
+        float speed = rnd.nextFloat() * rnd.nextInt(21);
         Wind.Direction dir = Wind.Direction.randomDir(rnd);
         Weather.Cloudiness cloudiness = Weather.Cloudiness.randomCloud(rnd);
         return new Weather(location, day, t, temperature, cloudiness, new Wind(dir, speed));
