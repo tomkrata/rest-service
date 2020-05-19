@@ -92,12 +92,6 @@ public class WeatherController
         return getDate(day + ";" + time, new SimpleDateFormat("d.M.yyyy;HH:mm"));
     }
 
-    //only for test purposes
-    public Date testGetDateFromDayAndTime(String day, String time)
-    {
-        return getDateFromDayAndTime(day, time);
-    }
-
     /**
      * parse String date by SimpleDateFormat
      * if fails, then set current time
@@ -114,12 +108,6 @@ public class WeatherController
             d = new Date();
         }
         return d;
-    }
-
-    //only for test purposes
-    public Date testGetDate(String date, SimpleDateFormat sdf)
-    {
-        return getDate(date, sdf);
     }
 
     private enum Option {

@@ -31,6 +31,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -103,13 +104,27 @@ public class WeatherControllerTests {
     @Test
     public void getDateFromDayAndTimeShouldReturnNewDate() throws Exception {
         final Date expected = new SimpleDateFormat("d.M.yyyy;HH:mm").parse("20.2.2020;15:20");
-        final Date value = wc.testGetDateFromDayAndTime("20.2.2020", "15:20");
+        final Date value = getDateFromDayAndTime("20.2.2020", "15:20");
         assertEquals(expected, value);
     }
     @Test
     public void wrongFormatShouldReturnCurrentTimeMinutes() throws Exception {
         Date expected = DateUtils.round(new Date(), Calendar.MINUTE);
-        Date value = DateUtils.round(wc.testGetDate("202.2020", new SimpleDateFormat("d.M.yyyy")), Calendar.MINUTE);
+        Date value = DateUtils.round(getDate("202.2020", new SimpleDateFormat("d.M.yyyy")), Calendar.MINUTE);
         assertEquals(expected, value);
+    }
+    private Date getDate(String date,SimpleDateFormat sdf)
+    {
+        Date d;
+        try {
+            d = sdf.parse(date);
+        } catch (ParseException e) {
+            d = new Date();
+        }
+        return d;
+    }
+    private Date getDateFromDayAndTime(String day, String time)
+    {
+        return getDate(day + ";" + time, new SimpleDateFormat("d.M.yyyy;HH:mm"));
     }
 }
