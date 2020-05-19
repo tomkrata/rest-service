@@ -70,7 +70,6 @@ public class WeatherControllerTests {
                 .andExpect(jsonPath("$.time").value("00:00"));
     }
 
-
     @Test
     public void wrongParametersShouldReturnDefaultValues() throws Exception {
         Date d = new Date();
@@ -81,5 +80,17 @@ public class WeatherControllerTests {
                 .andExpect(jsonPath("$.location").value("Prague"))
                 .andExpect(jsonPath("$.time").value(time))
                 .andExpect(jsonPath("$.date").value(date));
+    }
+
+
+    @Test
+    public void wrongPutParametersShouldReturnDefaultValues() throws Exception {
+        Date d = new Date();
+        String time = new SimpleDateFormat("HH:mm").format(d);
+        this.mockMvc.perform(get("/weather?time:12&date=21.3.2000"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.location").value("Prague"))
+                .andExpect(jsonPath("$.time").value(time))
+                .andExpect(jsonPath("$.date").value("21.03.2000"));
     }
 }
