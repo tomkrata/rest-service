@@ -23,6 +23,17 @@ public class WeatherController
         return createWeather(location, date, time);
     }
 
+
+    /**
+     * creates random weather by given seed
+     * the seed is changed by the method arguments
+     * temperature's range <-10 ; 20> (integers)
+     * speed's range <0 ; 20> (floats)
+     * @param location
+     * @param date
+     * @param time
+     * @return Weather
+     */
     private Weather createWeather(String location, String date, String time)
     {
         Date day = getDate(date, new SimpleDateFormat("d.M.yyyy"));
@@ -50,6 +61,13 @@ public class WeatherController
         throw new java.lang.UnsupportedOperationException();
     }
 
+    /**
+     * parse String date by SimpleDateFormat
+     * if fails, then set current time
+     * @param date
+     * @param sdf
+     * @return Date
+     */
     private Date getDate(String date,SimpleDateFormat sdf)
     {
         Date d;
