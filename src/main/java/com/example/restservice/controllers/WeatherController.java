@@ -2,12 +2,10 @@ package com.example.restservice.controllers;
 
 import com.example.restservice.Weather;
 import com.example.restservice.Wind;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -59,6 +57,11 @@ public class WeatherController
     private Weather getWeatherFromDtb(String location, Date date)
     {
         throw new java.lang.UnsupportedOperationException();
+    }
+
+    public Date getDateFromDayAndTime(String day, String time)
+    {
+        return getDate(day + ";" + time, new SimpleDateFormat("d.M.yyyy;HH:mm"));
     }
 
     /**

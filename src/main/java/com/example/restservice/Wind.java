@@ -1,14 +1,10 @@
 package com.example.restservice;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Wind {
-    private final String template = "%s at %.1f m/s";
-    private Direction dir;
-    private float speed;
+    private final Direction dir;
+    private final float speed;
 
     public Wind(Direction dir, float speed) {
         this.dir = dir;
@@ -17,7 +13,7 @@ public class Wind {
 
     @Override
     public String toString() {
-        return String.format(template, dir.name(), speed);
+        return String.format("%s at %.1f m/s", dir.name(), speed);
     }
 
     public Direction getDir() {

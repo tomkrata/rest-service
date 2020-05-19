@@ -20,7 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.restservice.controllers.WeatherController;
 import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +39,7 @@ public class WeatherControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+    private static final WeatherController wc = new WeatherController();
 
     @Test
     public void noParamShouldReturnCurrentTimeAndPrague() throws Exception {
@@ -92,5 +96,12 @@ public class WeatherControllerTests {
                 .andExpect(jsonPath("$.location").value("Prague"))
                 .andExpect(jsonPath("$.time").value(time))
                 .andExpect(jsonPath("$.date").value("21.03.2000"));
+    }
+
+    @Test
+    public void getDateFromDayAndTimeShouldReturnNewDate() throws Exception {
+        final Date expected = new SimpleDateFormat("d.M.yyyy;HH:mm").parse("20.2.2020;15:20");
+        final Date value = wc.getDateFromDayAndTime("20.2.2020", "15:20");
+        assertEquals(expected, value);
     }
 }
